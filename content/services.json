@@ -1,0 +1,5 @@
+[
+  { "id": "semipermanente", "title": "Uñas semipermanentes", "price": 18, "desc": "Color liso, acabado espejo." },
+  { "id": "acrilicas", "title": "Acrílicas", "price": 28, "desc": "Extensión + forma personalizada." },
+  { "id": "nail-art", "title": "Nail Art", "price": 22, "desc": "Diseños minimal pop (dorado, beige, blanco)." }
+]

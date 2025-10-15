@@ -1,63 +1,33 @@
-/* Tailwind v4: importa el framework con una sola línea */
 @import "tailwindcss";
 
-/* Paleta de marca como variables CSS (las usamos en clase nativa) */
+/* Paleta (pedida por la clienta) */
 :root{
-  --beige:   #F2E6D8;
-  --gold:    #C9A227;
-  --espresso:#2E2A27;
-  --ivory:   #FFFCF6;
+  --beige:#F2E6D8;
+  --gold:#C9A227;
+  --espresso:#2E2A27; /* marrón oscuro para contrastar */
+  --ivory:#FFFCF6;
 }
 
-html, body { height: 100%; }
-
-body{
+/* Tipografía y base */
+html, body {
   background: var(--beige);
   color: var(--espresso);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Contenedor ancho cómodo */
-.section{
-  max-width: 72rem;        /* ~1152px */
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-@media (min-width:640px){ .section{ padding-inline: 1.5rem; } }
-@media (min-width:1024px){ .section{ padding-inline: 2rem; } }
-
-/* Título dorado (sin utilidades @apply, todo CSS puro) */
-.gold-title{
-  background: linear-gradient(135deg, #E6C766, #B8891D);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+/* Titulares dorados */
+.h-gold { color: var(--gold); }
 
 /* Botón primario */
-.btn-primary{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
-
-  border-radius: 9999px;
-  padding: .75rem 1.25rem;
-
-  background-color: var(--gold);
-  color: var(--ivory);
-  font-weight: 600;
-  box-shadow: 0 10px 30px rgba(0,0,0,.06);
-  transition: opacity .2s ease;
+.btn-gold {
+  @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-medium transition;
+  background: var(--gold);
+  color: white;
 }
-.btn-primary:hover{ opacity: .9; }
+.btn-gold:hover { filter: brightness(0.95); }
 
-/* Tarjetas translúcidas con blur (sin @apply) */
-.glass{
-  background: rgba(255,252,246,0.7);  /* ivory 70% */
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(0,0,0,.05);
-  border-radius: 1rem;
+/* Tarjeta translucida suave */
+.card {
+  @apply rounded-2xl p-5;
+  background: color-mix(in oklab, white 70%, transparent);
   box-shadow: 0 10px 30px rgba(0,0,0,.06);
 }

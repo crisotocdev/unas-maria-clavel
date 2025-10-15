@@ -1,35 +1,27 @@
-// src/app/layout.tsx
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Playfair_Display, Inter } from "next/font/google";
-
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "María Clavel | Uñas",
-  description:
-    "Manicure profesional y diseños personalizados. Agenda tu hora con María Clavel.",
-  themeColor: "#F2E6D8",
+  metadataBase: new URL("https://unas-maria-clavel.vercel.app"),
+  title: { default: "María Clavel | Uñas", template: "%s · María Clavel" },
+  description: "Uñas en tonos beige y dorado. Agenda por WhatsApp.",
   openGraph: {
     title: "María Clavel | Uñas",
-    description:
-      "Manicure profesional y diseños personalizados. Agenda tu hora con María Clavel.",
-    url: "https://tu-dominio.com",
+    description: "Diseños finos en tonos beige y dorado.",
+    url: "https://unas-maria-clavel.vercel.app",
     siteName: "María Clavel",
-    images: [{ url: "/og.jpg", width: 1000, height: 630, alt: "María Clavel" }],
-    type: "website",
-  },
+    type: "website"
+  }
+};
+
+export const viewport: Viewport = {
+  themeColor: "#F2E6D8"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body
-        className={`${playfair.variable} ${inter.variable} bg-beige text-espresso antialiased`}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
