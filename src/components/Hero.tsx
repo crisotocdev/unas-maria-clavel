@@ -1,25 +1,43 @@
+'use client';
 import Image from "next/image";
 
-export default function Hero() {
-  return (
-    <section className="px-4 py-6">
-      <div className="mx-auto max-w-6xl">
-        {/* Contenedor con altura controlada */}
-        <div className="relative overflow-hidden rounded-3xl shadow-soft
-                        h-40 sm:h-52 md:h-64 lg:h-72 xl:h-80">
+type Props = {
+  src?: string;
+  alt?: string;
+  /** "contain" = muestra todo sin recorte | "cover" = llena ancho (puede recortar) */
+  mode?: "contain" | "cover";
+  /** Alto máx. del hero en px (cuando sea muy grande el viewport) */
+  maxHeightPx?: number;
+  /** Color de fondo para las franjas cuando se usa contain */
+  bg?: string;
+};
 
-          {/* La imagen se “pega” al contenedor y cubre sin crecer de más */}
-          <Image
-            src="/bannerArreglado.png"
-            alt="Uñas María Clavel"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="(min-width: 1280px) 1100px, (min-width: 1024px) 900px, (min-width: 640px) 600px, 100vw"
-            // si quieres mover el punto focal:
-            // className="object-cover [object-position:50%_35%]"
-          />
-        </div>
+export default function Hero({
+  src = "/bannerArreglado.png",
+  alt = "María Clavel | Uñas",
+  mode = "contain",
+  maxHeightPx = 320,
+  bg = "#f3d7df", // rosado suave, ajusta si quieres
+}: Props) {
+  // Altura ~33vw (3:1) con tope en desktop y piso en móviles
+  const heightStyle = { height: `clamp(180px, 33vw, ${maxHeightPx}px)` };
+
+  return (
+    <section className="w-full">
+      <div className="relative w-full" style={heightStyle}>
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          priority
+          sizes="100vw"
+          quality={80}
+          className={mode === "contain" ? "object-contain" : "object-cover"}
+          style={{ backgroundColor: mode === "contain" ? bg : undefined }}
+        />
+
+        {/* Overlay sutil opcional */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/10 via-transparent to-black/10" />
       </div>
     </section>
   );

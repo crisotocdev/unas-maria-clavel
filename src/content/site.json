@@ -1,0 +1,18 @@
+{
+  "brand": "María Clavel | Uñas",
+  "tagline": "Diseños Profesionales al gusto del cliente",
+  "whatsapp": "569XXXXXXXX",
+  "address": "Pasaje Francisco Toso 1702, Villa Alemana, Valparaíso",
+  "hours": "Lun–Sáb 10:00–19:00",
+  "instagram": "https://instagram.com/tu_cuenta",
+  "pro": {
+    "name": "María Clavel",
+    "role": "Manicurista Profesional",
+    "avatar": "/team/maria-clavel.webp",
+    "avatars": [
+      "/team/maria-clavel.webp",
+      "/team/maria-clavel-2.webp"
+    ],
+    "bio": "Más de 5 años creando manicuras personalizadas, con enfoque en semipermanente, acrílicas y nail art."
+  }
+}

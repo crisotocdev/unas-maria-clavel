@@ -1,122 +1,144 @@
-// src/app/page.tsx
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
 import ServiceCard from "@/components/ServiceCard";
+import Hero from "@/components/Hero";
+import Gallery from "@/components/Gallery";
+import StickyCTA from "@/components/StickyCTA";
+import AvatarRotator from "@/components/AvatarRotator";
+import MapCard from "@/components/MapCard";
 
-export const revalidate = 60; // ISR opcional
+import { getSite, getServices, getGallery } from "@/lib/content";
 
-type Service = {
-  id: string;
-  title: string;
-  desc: string;
-  price: number | string;
-  image: string;
-  aspect?: "square" | "16/9" | "4/3";
-};
+export const revalidate = 60;
 
 export default async function Home() {
-  // Datos de ejemplo (puedes moverlos a /lib/content si quieres)
-  const site = {
-    brand: "María Clavel | Uñas",
-    tagline: "Diseños finos en tonos beige y dorado",
-    whatsapp: "56900000000", // <-- pon el número real sin + ni espacios
-    instagram: "https://instagram.com/",
-    address: "Villa Alemana, CL",
-    hours: "Lun–Sáb 10:00–19:00",
-  };
-
-  const services: Service[] = [
-    {
-      id: "semi",
-      title: "Uñas semipermanentes",
-      desc: "Color liso, acabado espejo.",
-      price: 18,
-      image: "/services/unasSemitransparentes.webp",
-      aspect: "square",
-    },
-    {
-      id: "nailart",
-      title: "Nail Art",
-      desc: "Diseños minimal pop (dorado, beige, blanco).",
-      price: 22,
-      image: "/services/nailArt.webp",
-      aspect: "square",
-    },
-    {
-      id: "acrilicas",
-      title: "Acrílicas",
-      desc: "Extensión + forma personalizada.",
-      price: 28,
-      image: "/services/acrilicas.webp",
-      aspect: "square",
-    },
-  ];
+  const [site, services, gallery] = await Promise.all([
+    getSite(),
+    getServices(),
+    getGallery(),
+  ]);
 
   return (
     <main className="min-h-screen">
-      <NavBar />
-
-      {/* Hero con el banner */}
+      {/* 1) Banner principal arriba */}
       <Hero />
 
-      {/* Intro / CTA */}
-      <section className="max-w-6xl mx-auto px-6 pt-12 pb-8 text-center">
-        <h1 className="text-3xl md:text-4xl font-semibold h-gold">{site.brand}</h1>
-        <p className="mt-2 text-lg opacity-80">{site.tagline}</p>
-        <a
-          href={`https://wa.me/${site.whatsapp}`}
-          className="btn-gold mt-6 inline-flex"
-        >
-          Reservar por WhatsApp
-        </a>
-      </section>
+      {/* 2) Nav justo debajo del banner (sin marca para no duplicar el título) */}
+      <NavBar showBrand={false} />
+
+      {/* 3) Tarjeta con avatar (rotador) inmediatamente debajo del Nav */}
+      {site.pro && (
+        <section className="max-w-5xl mx-auto px-6 pt-6">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 rounded-2xl border border-[#B8860B]/30 bg-[#B8860B]/5 p-4">
+            <AvatarRotator
+              images={site.pro.avatars ?? (site.pro.avatar ? [site.pro.avatar] : [])}
+              alt={`${site.pro.name} – ${site.pro.role ?? "Manicurista"}`}
+              sizePx={150}
+              intervalMs={4000}
+              transitionMs={1000}
+              goldRing
+              glow
+              spin
+              spinSpeedMs={2200}
+            />
+
+            <div className="flex-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Nombre con más contraste */}
+                <span
+                  className="font-black text-lg md:text-xl leading-none text-[#6E4F00]"
+                  style={{ textShadow: "0 1px 0 rgba(0,0,0,0.18)" }}
+                >
+                  {site.pro.name}
+                </span>
+
+                {site.pro.role && (
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full
+                                   bg-[#B8860B]/15 text-[#7A5B00] border border-[#B8860B]/35
+                                   text-xs md:text-sm font-semibold">
+                    {site.pro.role}
+                  </span>
+                )}
+              </div>
+
+              <p className="text-sm opacity-80 mt-1">{site.pro.bio}</p>
+            </div>
+
+            <a
+              href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hola María, me gustaría agendar una cita ✨")}`}
+              className="btn-gold shrink-0"
+            >
+              Reservar por WhatsApp
+            </a>
+          </div>
+        </section>
+      )}
 
       {/* Servicios */}
-      <section id="servicios" className="max-w-6xl mx-auto px-6 py-10">
-        <h2 className="text-2xl font-semibold mb-4 h-gold">Servicios</h2>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <ServiceCard
-              key={s.id}
-              title={s.title}
-              desc={s.desc}
-              price={s.price}
-              image={s.image}
-              aspect={s.aspect ?? "square"}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Contacto */}
-      <section id="contacto" className="max-w-6xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-semibold mb-2 h-gold">Contacto</h2>
-        <p className="opacity-80">
-          {site.address} · {site.hours}
-        </p>
-        <div className="mt-4 flex gap-3">
-          <a
-            href={`https://wa.me/${site.whatsapp}`}
-            className="btn-gold inline-flex"
-          >
-            WhatsApp
-          </a>
-          {site.instagram && (
-            <a
-              href={site.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className="underline opacity-85 hover:opacity-100"
-            >
-              Instagram
-            </a>
+      <section id="servicios" className="max-w-6xl mx-auto px-6 py-12 scroll-mt-24">
+        <h2 className="text-2xl md:text-3xl font-semibold mb-6 h-gold">Servicios</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {services.length === 0 ? (
+            <p className="opacity-70">Pronto agregaremos nuestros servicios ✨</p>
+          ) : (
+            services.map((s) => (
+              <ServiceCard
+                key={s.id ?? s.image ?? s.title}
+                title={s.title}
+                desc={s.desc ?? ""}
+                price={s.price ?? ""}
+                image={s.image}
+                phone={site.whatsapp}
+              />
+            ))
           )}
         </div>
       </section>
 
+      {/* Galería */}
+      <section id="galeria" className="max-w-6xl mx-auto px-6 py-12 scroll-mt-24">
+        <Gallery items={gallery} />
+      </section>
+
+      {/* Contacto + Mapa */}
+      <section id="contacto" className="max-w-5xl mx-auto px-6 py-12 scroll-mt-24">
+        <h2 className="text-2xl md:text-3xl font-semibold mb-2 h-gold">Contacto</h2>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="md:col-span-1">
+            <p className="opacity-80">
+              {site.address} · {site.hours}
+            </p>
+            <div className="mt-4 flex gap-3">
+              <a href={`https://wa.me/${site.whatsapp}`} className="btn-gold">WhatsApp</a>
+              {site.instagram && (
+                <a
+                  href={site.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline opacity-80 hover:opacity-100"
+                >
+                  Instagram
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div className="md:col-span-2">
+            {site.address && (
+              <MapCard
+                address={site.address}
+                zoom={16}
+                height={280}
+                linkLabel="Cómo llegar"
+              />
+            )}
+          </div>
+        </div>
+      </section>
+
       <Footer />
+      <StickyCTA phone={site.whatsapp} />
     </main>
   );
 }
