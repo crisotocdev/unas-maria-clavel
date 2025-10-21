@@ -97,8 +97,10 @@ export default async function Home() {
 
       {/* Galería */}
       <section id="galeria" className="max-w-6xl mx-auto px-6 py-12 scroll-mt-24">
-        <Gallery items={gallery} />
+        <h2 className="text-2xl md:text-3xl font-semibold mb-6 h-gold">Galería</h2>
+        <Gallery items={gallery} accent="gold" />
       </section>
+
 
       {/* Contacto + Mapa */}
       <section id="contacto" className="max-w-5xl mx-auto px-6 py-12 scroll-mt-24">
